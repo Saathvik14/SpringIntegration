@@ -28,7 +28,7 @@ public class GithubPayloadService {
     public ResponseEntity<String> sendPayloadToServiceBus(GithubPayload payload) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode jsonData = objectMapper.readTree(String.valueOf(payload));
+            JsonNode jsonData = objectMapper.valueToTree(payload);
             String commitId = jsonData.get("after").asText();
 
             String connectionString = "Endpoint=sb://javaservicebus.servicebus.windows.net/;SharedAccessKeyName=javatopicpolicy;SharedAccessKey=Kk/4YJT6N0le4iXkGcuh/cwpvwhqIdhef+ASbA8UurI=;EntityPath=japatopic";
@@ -38,15 +38,18 @@ public class GithubPayloadService {
                     .topicName("japatopic")
                     .buildClient();
 
-            ServiceBusMessage message = new ServiceBusMessage(objectMapper.writeValueAsString(payload));
+            ServiceBusMessage message = new ServiceBusMessage(jsonData.toString());
             message.setContentType("application/json");
 
             senderClient.sendMessage(message);
             senderClient.close();
 
             return ResponseEntity.ok("Data Sent To Topic");
-        } catch (IOException | ServiceBusException ex) {
-            return ResponseEntity.ok(ex.toString());
+        }
+//        catch (IOException | ServiceBusException ex) {
+        catch (Exception ex) {
+//            return ResponseEntity.ok(ex.toString());
+            return ResponseEntity.status(500).body("Error: " + ex.getMessage());
         }
     }
 
