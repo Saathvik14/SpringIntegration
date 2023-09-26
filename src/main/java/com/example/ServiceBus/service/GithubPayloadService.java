@@ -38,7 +38,7 @@ public class GithubPayloadService {
                     .topicName("japatopic")
                     .buildClient();
 
-            ServiceBusMessage message = new ServiceBusMessage(String.valueOf(payload));
+            ServiceBusMessage message = new ServiceBusMessage(objectMapper.writeValueAsString(payload));
             message.setContentType("application/json");
 
             senderClient.sendMessage(message);
