@@ -48,6 +48,10 @@ public class GithubPayloadService {
         }
 //        catch (IOException | ServiceBusException ex) {
         catch (Exception ex) {
+
+            // Log the exception for debugging purposes
+            ex.printStackTrace();
+
 //            return ResponseEntity.ok(ex.toString());
             return ResponseEntity.status(500).body("Error: " + ex.getMessage());
         }
