@@ -1,10 +1,18 @@
 package com.example.ServiceBus.service;
 
+import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusException;
+import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.example.ServiceBus.model.GithubPayload;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
 
 @Service
 public class GithubPayloadService {
@@ -19,20 +27,45 @@ public class GithubPayloadService {
 
     public ResponseEntity<String> sendPayloadToServiceBus(GithubPayload payload) {
         try {
-            // Perform any necessary processing on the GithubPayload object
-            // For example, you can access payload.getAction(), payload.getAfter(), etc.
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode jsonData = objectMapper.readTree(String.valueOf(payload));
+            String commitId = jsonData.get("after").asText();
 
-            // If you have Azure Service Bus integration code, you can send the payload here
-            // Replace the following code with your Azure Service Bus logic
-            // Example: serviceBusSender.send(payload);
+            String connectionString = "Endpoint=sb://javaservicebus.servicebus.windows.net/;SharedAccessKeyName=javatopicpolicy;SharedAccessKey=Kk/4YJT6N0le4iXkGcuh/cwpvwhqIdhef+ASbA8UurI=;EntityPath=japatopic";
+            ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
+                    .connectionString(connectionString)
+                    .sender()
+                    .topicName("japatopic")
+                    .buildClient();
 
-            // Simulate success
+            ServiceBusMessage message = new ServiceBusMessage(String.valueOf(payload));
+            message.setContentType("application/json");
+
+            senderClient.sendMessage(message);
+            senderClient.close();
+
             return ResponseEntity.ok("Data Sent To Topic");
-        } catch (Exception e) {
-            // Handle exceptions or errors here
-            // You can log the error and return an error response if needed
-            return ResponseEntity.status(500).body("Error: " + e.getMessage());
+        } catch (IOException | ServiceBusException ex) {
+            return ResponseEntity.ok(ex.toString());
         }
     }
+
+//    public ResponseEntity<String> sendPayloadToServiceBus(GithubPayload payload) {
+//        try {
+//            // Perform any necessary processing on the GithubPayload object
+//            // For example, you can access payload.getAction(), payload.getAfter(), etc.
+//
+//            // If you have Azure Service Bus integration code, you can send the payload here
+//            // Replace the following code with your Azure Service Bus logic
+//            // Example: serviceBusSender.send(payload);
+//
+//            // Simulate success
+//            return ResponseEntity.ok("Data Sent To Topic");
+//        } catch (Exception e) {
+//            // Handle exceptions or errors here
+//            // You can log the error and return an error response if needed
+//            return ResponseEntity.status(500).body("Error: " + e.getMessage());
+//        }
+//    }
 }
 
