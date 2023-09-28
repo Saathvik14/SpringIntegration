@@ -11,8 +11,8 @@ public class ReceiverService {
 
 
     //Receiver logic for the payload
-    private static final String connectionString = "Endpoint=sb://javaservicebus.servicebus.windows.net/;SharedAccessKeyName=javapolicy;SharedAccessKey=bE8c7BhDGiZ0oqG0XT0k9b2FNYJtxFuWH+ASbGOcFDs=;EntityPath=javatopic";
-    private static final String queueName = "javatopic";
+     static  String connectionString = "Endpoint=sb://javaservicebus.servicebus.windows.net/;SharedAccessKeyName=javapolicy;SharedAccessKey=bE8c7BhDGiZ0oqG0XT0k9b2FNYJtxFuWH+ASbGOcFDs=;EntityPath=javatopic";
+     static  String queueName = "javatopic";
 
     public void receiveMessage() {
         CountDownLatch countDownLatch = new CountDownLatch(1);
