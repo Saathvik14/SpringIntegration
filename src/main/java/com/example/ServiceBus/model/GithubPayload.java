@@ -17,6 +17,7 @@ public class GithubPayload {
     private List<Commit> commits;
     private Commit head_commit;
 
+
     public String getRef() {
         return ref;
     }

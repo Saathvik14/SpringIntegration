@@ -3,22 +3,17 @@ package com.example.ServiceBus.controller;
 import com.example.ServiceBus.model.GithubPayload;
 import com.example.ServiceBus.model.WeatherForecast;
 import com.example.ServiceBus.service.GithubPayloadService;
+import com.example.ServiceBus.service.ReceiverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.azure.messaging.servicebus.*;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @RestController
@@ -31,6 +26,10 @@ public class ServiceBusController {
     public ServiceBusController(GithubPayloadService payloadService) {
         this.payloadService = payloadService;
     }
+
+    @Autowired
+    private ReceiverService receiverService;
+
 
     private static final String[] Summaries = {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -90,6 +89,14 @@ public class ServiceBusController {
         List<WeatherForecast> weatherForecasts = new ArrayList<>();
         weatherForecasts.add(weatherForecast);
         return ResponseEntity.ok(weatherForecasts);
+    }
+
+
+    //Get Mapping to receive payload from service bus
+
+    @GetMapping("/start")
+    public void startReceivingMessages() {
+        receiverService.receiveMessage();
     }
 
 }
