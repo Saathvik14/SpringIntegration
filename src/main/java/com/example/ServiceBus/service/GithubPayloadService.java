@@ -32,11 +32,11 @@ public class GithubPayloadService {
             JsonNode jsonData = objectMapper.valueToTree(payload);
             String commitId = jsonData.get("after").asText();
 
-            String connectionString = "Endpoint=sb://javaservicebus.servicebus.windows.net/;SharedAccessKeyName=javapolicy;SharedAccessKey=bE8c7BhDGiZ0oqG0XT0k9b2FNYJtxFuWH+ASbGOcFDs=;EntityPath=javatopic";
+            String connectionString = "Endpoint=sb://javaservicebus.servicebus.windows.net/;SharedAccessKeyName=javaqueuepolicy;SharedAccessKey=Q5VJN3BXXXc5ZICuMw6uw+mlXyR7z45w9+ASbHCfMIo=;EntityPath=javaqueue";
             ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
                     .connectionString(connectionString)
                     .sender()
-                    .queueName("javatopic")
+                    .queueName("javaqueue")
                     .buildClient();
 
             ServiceBusMessage message = new ServiceBusMessage(jsonData.toString());
