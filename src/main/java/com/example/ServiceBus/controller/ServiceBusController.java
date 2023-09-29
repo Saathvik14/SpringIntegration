@@ -35,7 +35,7 @@ public class ServiceBusController {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
 
-    @GetMapping
+    @GetMapping("/view")
     public List<WeatherForecast> getWeatherForecasts() {
         return Arrays.stream(Summaries)
                 .map(summary -> new WeatherForecast(
