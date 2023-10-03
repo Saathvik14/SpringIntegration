@@ -45,7 +45,7 @@ public class GithubPayloadService {
             senderClient.sendMessage(message);
             senderClient.close();
 
-            return ResponseEntity.ok("Data Sent To Topic");
+            return ResponseEntity.ok("Data Sent To Queue");
         }
 //        catch (IOException | ServiceBusException ex) {
         catch (Exception ex) {
