@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 public class ServiceBusController {
-    String sname="SaathvikJava";
+    String sname="SaathvikJavaa";
 
     private final GithubPayloadService payloadService;
     @Autowired
@@ -91,8 +91,8 @@ public class ServiceBusController {
         return ResponseEntity.ok(weatherForecasts);
     }
 
+//Get Mapping to receive payload from service bus
 
-    //Get Mapping to receive payload from service bus
 
     @GetMapping("/start")
     public void startReceivingMessages() {
