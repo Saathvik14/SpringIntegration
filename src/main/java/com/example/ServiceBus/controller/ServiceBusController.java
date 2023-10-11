@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 public class ServiceBusController {
-    String sname="SaathvikJava";
+    String sname="SaathvikJavaa";
 
     private final GithubPayloadService payloadService;
     @Autowired
